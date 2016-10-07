@@ -105,23 +105,17 @@ class Linguo {
 
 		//Get CodeIgniter instance
 		$this->_CI =& get_instance();
+        $this->_CI->load->helper('directory');
         $this->_DB = $this->_CI->load->database($this->dbGroup, TRUE);
 
 		//Load DBForge
 		$this->_dbforge();
+        //Prepare database
+        $this->_setUpDatabase();
+        //Check languages
+        $this->_setUpLanguages();
 
-		//Setting up the tables
-		foreach($this->dbTables AS $tableName){
-			//If table not exists
-			if($this->_DB->table_exists(strtolower(self::DB_PREFIX).$tableName)===false){
-				//Define fiedls
-				$this->_CI->dbforge->add_field($this->dbStructure[$tableName]['fields']);
-				//Add Key
-				$this->_CI->dbforge->add_key($this->dbStructure[$tableName]['pk'], TRUE);
-				//Create Table
-				$this->_CI->dbforge->create_table(strtolower(self::DB_PREFIX).$tableName);
-			}
-		}
+		
 	}
 
     // DBFORGE INITIALIZATION
@@ -131,6 +125,70 @@ class Linguo {
         $class = 'CI_DB_'.$this->_CI->db->dbdriver.'_forge';
 
         $this->_CI->dbforge = new $class($this->_DB);
+    }
+
+    //SET UP THE TABLES
+    public function _setUpDatabase(){
+        //Setting up the tables
+        foreach($this->dbTables AS $tableName){
+            //If table not exists
+            if($this->_DB->table_exists(strtolower(self::DB_PREFIX).$tableName)===false){
+                //Define fiedls
+                $this->_CI->dbforge->add_field($this->dbStructure[$tableName]['fields']);
+                //Add Key
+                $this->_CI->dbforge->add_key($this->dbStructure[$tableName]['pk'], TRUE);
+                //Create Table
+                $this->_CI->dbforge->create_table(strtolower(self::DB_PREFIX).$tableName);
+            }
+        }
+    }
+
+    //CHECK EXISTING LANGUAGES
+    public function _setUpLanguages(){
+        $language_folders = directory_map(APPPATH.'language/', 1);
+
+        foreach($language_folders AS $language_slug){
+            $result = $this->_addLanguage($language_slug);
+
+            if($result){
+                $this->_setUpLanguageFiles(APPPATH.'language/'.$language_slug."/");
+            }
+        }
+    }
+
+    //CHECK EXISTING LANGUAGE FILES
+    public function _setUpLanguageFiles($language_path){
+        $language_files = directory_map($language_path);
+
+        var_dump($language_files);
+    }
+
+    //ADD LANGUAGE
+    public function _addLanguage($language_slug){
+        //Configure query and insert if not exists
+        $fields = array();
+        $fields['slug'] = $language_slug;
+        $fields['folder'] = APPPATH.'language/'.$language_slug."/";
+
+        $this->_DB->select('language_id');
+        $this->_DB->where('slug', $language_slug);
+        $exist_language = $this->_DB->get(self::DB_PREFIX.'languages');
+
+        if($exist_language->num_rows()==0){
+            $fields['is_master'] = 0;
+            $sql_query = $this->_DB->insert(self::DB_PREFIX.'languages', $fields);
+        }
+        else{
+            $this->_DB->where('slug', $language_slug);
+            $sql_query = $this->_DB->update(self::DB_PREFIX.'languages', $fields);   
+        }
+
+        if($sql_query){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 }
