@@ -1,5 +1,88 @@
+  	<div class="modal fade" id="newLanguageModal" tabindex="-1" role="dialog" aria-labelledby="newLanguageModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="newLanguageModalLabel">New Language</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="string-key" class="control-label">Name:</label>
+                            <input type="text" class="form-control" id="language-name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-new_language" data-dismiss="modal" class="btn btn-primary">Create Language</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="newFileModal" tabindex="-1" role="dialog" aria-labelledby="newFileModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="newFileModalLabel">New Language File</h4>
+                </div>
+                <div class="modal-body">
+                	<div class="col-md-12">
+                		<p>
+                			If you want to store the file inside a folder, please, type the folder name before the filename:
+                			<br/>
+                			<code>
+                				<small>my_folder/my_filename_lang.php</small>
+                			</code>
+                		</p>
+                	</div>
+                    <form>
+                        <div class="form-group">
+                            <label for="string-key" class="control-label">Filename (please, include .php extension):</label>
+                            <input type="text" class="form-control" id="file-name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-new_file" data-dismiss="modal" class="btn btn-primary">Create File</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="newStringModal" tabindex="-1" role="dialog" aria-labelledby="newStringModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="newStringModalLabel">New String</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="string-key" class="control-label">Key:</label>
+                            <input type="text" class="form-control" id="string-key">
+                        </div>
+                        <div class="form-group">
+                            <label for="string-value" class="control-label">Value:</label>
+                            <textarea class="form-control" id="string-value"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-new_string" data-dismiss="modal" class="btn btn-primary">Create String</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
   <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
   <!-- JQUERY SCRIPTS -->
+  <input type="hidden" id="language_id" value="<?php echo $language_id;?>">
+  <input type="hidden" id="file_id" value="<?php echo $file_id;?>">
+  <input type="hidden" id="linguo_url" value="<?php echo $linguo_url;?>">
   <script type="text/javascript">
     <?php echo $js_data;?>
   </script>
