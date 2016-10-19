@@ -10,22 +10,9 @@
         
         <div class="row">
             <div class="col-lg-12">
-                <h5>Input Examples Set</h5>
-                <div class="input-group">
-                    <span class="input-group-addon">@</span>
-                    <input type="text" class="form-control" placeholder="Username" />
-                </div>
-                <br />
-                <div class="input-group">
-                    <input type="text" class="form-control" />
-                    <span class="input-group-addon">.00</span>
-                </div>
-                <br />
-                <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="text" class="form-control" />
-                    <span class="input-group-addon">.00</span>
-                </div>
+                <?php
+                    var_dump($can_write);
+                ?>
             </div>
         </div>
     </div>

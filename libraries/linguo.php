@@ -25,6 +25,7 @@ class Linguo {
     private $dbGroup = 'default';
     private $viewsFolder = 'linguo/';
     private $exceptionFiles = array('index.html');
+    private $canWriteFiles = false;
 
     // URI CONFIGURATION
     private $linguoURL = '';
@@ -139,6 +140,11 @@ class Linguo {
         $this->_setUpDatabase();
         //Check languages
         $this->_setUpLanguages();
+
+        //Check writing permissions
+        if(is_writable(APPPATH.'language/')){
+            $this->canWriteFiles = true;
+        }
 
         //Prepare base url
         $this->linguoURL = base_url().$this->_CI->router->fetch_directory().$this->_CI->router->fetch_class()."/".$this->_CI->router->fetch_method();
@@ -435,6 +441,18 @@ class Linguo {
         return $js_content;
     }
 
+    //SET MASTER
+    public function setMaster($language_id){
+
+        $this->_DB->where('language_id', $language_id);
+        $upd_master = $this->_DB->update(self::DB_PREFIX.'languages', array('is_master' => '1'));
+
+        $this->_DB->where('language_id <>', $language_id);
+        $upd_master = $this->_DB->update(self::DB_PREFIX.'languages', array('is_master' => '0'));
+
+        return;
+    }
+
     //GET LANGUAGES
     public function getLanguages(){
         //Initialize output
@@ -542,6 +560,7 @@ class Linguo {
             $view_data['languages'] = $this->getLanguages();
             $view_data['language_id'] = $language_id;
             $view_data['file_id'] = $file_id;
+            $view_data['can_write'] = $this->canWriteFiles;
 
             //UI Items
             $view_data['css_data'] = $this->_get_css_data();
@@ -587,6 +606,9 @@ class Linguo {
         }
         else{
             switch($action){
+                case "set_master":
+                    $this->setMaster($this->_CI->input->post('language_id'));
+                    break;
                 case "create_language":
                     $this->createLanguage($this->_CI->input->post('value'));
                     break;

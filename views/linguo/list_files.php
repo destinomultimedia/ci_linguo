@@ -7,11 +7,17 @@
                     LANGUAGE FILES
                 </div>
                 <div class="col-md-9 text-right">
-                    <button class="btn btn-info" data-toggle="modal" data-target="#newFileModal">Add File</button>
+                    <?php
+                        if($can_write){
+                        ?>
+                        <button class="btn btn-info" data-toggle="modal" data-target="#newFileModal">Add File</button>
+                        <?php
+                        }
+                    ?>
                     <?php
                         if($language['is_master']=='0'){
                         ?>
-                        <button class="btn btn-warning">Set Master Language</button>
+                        <button class="btn btn-warning" id="btn-set_master">Set Master Language</button>
                         <?php
                         }
                     ?>

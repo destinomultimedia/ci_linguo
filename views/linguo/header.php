@@ -42,8 +42,14 @@
             ?>                              
             </ul>
             <hr/>
-            <div class="col-md-12 text-center">
-            	<button class="btn btn-info" data-toggle="modal" data-target="#newLanguageModal">Add Language</button>
-            </div>
+            <?php
+                if($can_write){
+                ?>
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-info" data-toggle="modal" data-target="#newLanguageModal">Add Language</button>
+                </div>
+                <?php
+                }
+            ?>
         </div>
     </nav>

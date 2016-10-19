@@ -103,4 +103,22 @@ $(document).ready(function () {
         });
 	});
 
+    //Set Master
+    $('#btn-set_master').click(function(){
+        var language_id = $('#language_id').val();
+
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: $('#linguo_url').val()+"/-/-/set_master",
+            data: {
+                language_id: language_id
+            },
+            success: function(data) { 
+                $('#language-name').val('');
+                location.reload(); 
+            }
+        });
+    });
+
 });

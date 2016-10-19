@@ -6,7 +6,13 @@
                     LANGUAGE FILE STRINGS
                 </div>
                 <div class="col-md-9 text-right">
-                    <button class="btn btn-info" data-toggle="modal" data-target="#newStringModal">Add String</button>
+                    <?php
+                        if($can_write){
+                        ?>
+                        <button class="btn btn-info" data-toggle="modal" data-target="#newStringModal">Add String</button>
+                        <?php
+                        }
+                    ?>
                 </div>
             </h3>
         </div>
