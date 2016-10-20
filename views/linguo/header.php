@@ -46,7 +46,7 @@
                 if($can_write){
                 ?>
                 <div class="col-md-12 text-center">
-                    <button class="btn btn-info" data-toggle="modal" data-target="#newLanguageModal">Add Language</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#newLanguageModal">Add Language</button>
                 </div>
                 <?php
                 }

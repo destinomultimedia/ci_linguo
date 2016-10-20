@@ -38,6 +38,75 @@ $(document).ready(function () {
         });
 	});
 
+    //Delete string
+    $('.delete_string').click(function(){
+        var id = this.id;
+        var arr_id = id.split('-');
+        var language_id = arr_id[1];
+        var file_id = arr_id[2];
+        var string_id = arr_id[3];
+
+        //Set Values
+        $('#ds-language_id').val(language_id);
+        $('#ds-file_id').val(file_id);
+        $('#ds-string_id').val(string_id);
+
+        $('#delStringModal').modal('show');
+    });
+
+    $('#btn-del_string').click(function(){
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: $('#linguo_url').val()+"/-/-/delete_string",
+            data: {
+                language_id: $('#ds-language_id').val(),
+                file_id: $('#ds-file_id').val(),
+                string_id: $('#ds-string_id').val()
+            },
+            success: function(data) { 
+                $('#ds-language_id').val('');
+                $('#ds-file_id').val('');
+                $('#ds-string_id').val('');
+
+                location.reload(); 
+            }
+        });
+    });
+
+    //Delete file
+    $('.delete_file').click(function(event){
+        event.preventDefault();
+
+        var id = this.id;
+        var arr_id = id.split('-');
+        var language_id = arr_id[1];
+        var file_id = arr_id[2];
+
+        //Set Values
+        $('#df-language_id').val(language_id);
+        $('#df-file_id').val(file_id);
+
+        $('#delFileModal').modal('show');
+    });
+
+    $('#btn-del_file').click(function(){
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: $('#linguo_url').val()+"/-/-/delete_file",
+            data: {
+                language_id: $('#df-language_id').val(),
+                file_id: $('#df-file_id').val(),
+            },
+            success: function(data) { 
+                $('#df-language_id').val('');
+                $('#df-file_id').val('');
+
+                location.reload(); 
+            }
+        });
+    });
 
 	//New String
 	$('#btn-new_string').click(function(){

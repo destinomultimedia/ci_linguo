@@ -12,6 +12,8 @@ if (!defined('BASEPATH'))
  * @author      David López Santos <meencantaesto@hotmail.com>
  */
 
+define('EXT', '.php');
+
 class Linguo {
 
 	// SETTINGS
@@ -130,9 +132,10 @@ class Linguo {
             $this->$item = $value;
         }
 
-		//Get CodeIgniter instance
+		//Get CodeIgniter instance and load needed libraries and helpers
 		$this->_CI =& get_instance();
         $this->_CI->load->helper('directory');
+        $this->_CI->load->helper('url');
         $this->_DB = $this->_CI->load->database($this->dbGroup, TRUE);
 
 		//Load DBForge
@@ -184,6 +187,11 @@ class Linguo {
         $language_folders = directory_map(APPPATH.'language/', 1);
 
         foreach($language_folders AS $language){
+            //Check if $language last character is /
+            if(substr($language, -1) == '/') {
+                $language = substr($language, 0, -1);
+            }
+
             $language_path = APPPATH.'language/'.$language."/";
 
             if(is_dir($language_path)){
@@ -576,13 +584,29 @@ class Linguo {
        
     }
 
+    //DELETE LANGUAGE FILE
+    public function deleteLanguageFile($file_id){
+        //Get File
+        $file = $this->_getLanguageFile($file_id);
+
+        $this->_DB->where('file_id', $file_id);
+        $delete_strings = $this->_DB->delete(self::DB_PREFIX.'language_strings');
+
+        $this->_DB->where('file_id', $file_id);
+        $delete_file = $this->_DB->delete(self::DB_PREFIX.'language_files');
+
+        if($delete_strings && $delete_file){
+            unlink($file['path']);
+        }
+    }
+
     //CREATE LANGUAGE STRING
     public function createString($file_id, $key, $value){
         //Configure query and insert if not exists
         $fields = array();
         $fields['file_id'] = $file_id;
         $fields['key'] = $key;
-        $fields['value'] = addslashes($value);
+        $fields['value'] = $value;
 
         $create_string = $this->_DB->insert(self::DB_PREFIX.'language_strings', $fields);
 
@@ -600,6 +624,20 @@ class Linguo {
         if($update_string){
             //Get String
             $string = $this->_getString($string_id);
+            //Write language file. 
+            $this->_writeLanguageFile($string['file_id']);
+        }
+    }
+
+    //DELETE LANGUAGE STRING
+    public function deleteString($string_id){
+        //Get String
+        $string = $this->_getString($string_id);
+
+        $this->_DB->where('string_id', $string_id);
+        $delete_string = $this->_DB->delete(self::DB_PREFIX.'language_strings');
+
+        if($delete_string){
             //Write language file. 
             $this->_writeLanguageFile($string['file_id']);
         }
@@ -679,6 +717,12 @@ class Linguo {
                     break;
                 case "update_string":
                     $this->updateString($this->_CI->input->post('string_id'), $this->_CI->input->post('value'));
+                    break;
+                case "delete_string":
+                    $this->deleteString($this->_CI->input->post('string_id'));
+                    break;
+                case "delete_file":
+                    $this->deleteLanguageFile($this->_CI->input->post('file_id'));
                     break;
             }
         }

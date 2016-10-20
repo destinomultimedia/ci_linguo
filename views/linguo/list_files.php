@@ -36,9 +36,11 @@
                     <li>
                         <i class="fa fa-folder"></i>
                         <?php echo $file['folder'];?> 
-
                         <a href="<?php echo $linguo_url;?>/<?php echo $language_id;?>/<?php echo $file_id;?>">
                             <?php echo $file['name'];?>     
+                            <div class="pull-right">
+                                <button class="btn btn-danger btn-xs delete_file" id="del-<?php echo($language_id);?>-<?php echo($file_id);?>"><i class="fa fa-remove"></i></button>
+                            </div>
                         </a>
                     </li>
                     <?php

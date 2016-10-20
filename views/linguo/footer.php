@@ -103,6 +103,45 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="delStringModal" tabindex="-1" role="dialog" aria-labelledby="delStringModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="delStringModalLabel">Delete String</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete the selected string? This cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-del_string" data-dismiss="modal" class="btn btn-danger">Delete String</button>
+                </div>
+                <input type="hidden" id="ds-language_id" value=""/>
+                <input type="hidden" id="ds-file_id" value=""/>
+                <input type="hidden" id="ds-string_id" value=""/>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delFileModal" tabindex="-1" role="dialog" aria-labelledby="delFileModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="delFileModalLabel">Delete File</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete the selected file (all language strings inside the file will be deleted too)? This cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-del_file" data-dismiss="modal" class="btn btn-danger">Delete File</button>
+                </div>
+                <input type="hidden" id="df-language_id" value=""/>
+                <input type="hidden" id="df-file_id" value=""/>
+            </div>
+        </div>
+    </div>
   </div>
   <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
   <!-- JQUERY SCRIPTS -->
