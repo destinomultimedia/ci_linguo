@@ -11,13 +11,19 @@
                             <label for="string-key" class="control-label">Name:</label>
                             <input type="text" class="form-control" id="language-name">
                         </div>
-                        <div class="form-group">
-                            <label for="string-key" class="control-label">Clone from master language:</label>
-                            <br />
-                            <input type="radio" class="form-check-input" value="1" name="language-clone_from_master"> Si
-                            &nbsp;&nbsp;
-                            <input type="radio" class="form-check-input" value="0" name="language-clone_from_master" checked=""> No
-                        </div>
+                        <?php
+                            if($master_language_id !== false){
+                            ?>
+                            <div class="form-group">
+                                <label for="string-key" class="control-label">Clone from master language:</label>
+                                <br />
+                                <input type="radio" class="form-check-input" value="1" name="language-clone_from_master"> Si
+                                &nbsp;&nbsp;
+                                <input type="radio" class="form-check-input" value="0" name="language-clone_from_master" checked=""> No
+                            </div>
+                            <?php
+                            }
+                        ?>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -49,13 +55,19 @@
                             <label for="string-key" class="control-label">Filename (please, include .php extension):</label>
                             <input type="text" class="form-control" id="file-name">
                         </div>
-                        <div class="form-group">
-                            <label for="string-key" class="control-label">Clone from master language:</label>
-                            <br />
-                            <input type="radio" class="form-check-input" value="1" name="file-clone_from_master"> Si
-                            &nbsp;&nbsp;
-                            <input type="radio" class="form-check-input" value="0" name="file-clone_from_master" checked=""> No
-                        </div>
+                        <?php
+                            if($master_language_id !== false){
+                            ?>
+                            <div class="form-group">
+                                <label for="string-key" class="control-label">Clone from master language:</label>
+                                <br />
+                                <input type="radio" class="form-check-input" value="1" name="file-clone_from_master"> Si
+                                &nbsp;&nbsp;
+                                <input type="radio" class="form-check-input" value="0" name="file-clone_from_master" checked=""> No
+                            </div>
+                            <?php
+                            }
+                        ?>
                     </form>
                 </div>
                 <div class="modal-footer">

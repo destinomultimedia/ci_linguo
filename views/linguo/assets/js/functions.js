@@ -68,13 +68,13 @@ $(document).ready(function () {
 	//New Language
 	$('#btn-new_language').click(function(){
 		var value = $('#language-name').val();
-
 		$.ajax({
             cache: false,
             type: 'POST',
             url: $('#linguo_url').val()+"/-/-/create_language",
             data: {
-            	value: value
+            	value: value,
+                clone: $('input[name=language-clone_from_master]:checked').val()
             },
             success: function(data) { 
             	$('#language-name').val('');
@@ -94,7 +94,8 @@ $(document).ready(function () {
             url: $('#linguo_url').val()+"/-/-/create_file",
             data: {
             	language_id: language_id,
-            	value: value
+            	value: value,
+                clone: $('input[name=file-clone_from_master]:checked').val()
             },
             success: function(data) { 
             	$('#language-name').val('');

@@ -26,6 +26,7 @@ class Linguo {
     private $viewsFolder = 'linguo/';
     private $exceptionFiles = array('index.html');
     private $canWriteFiles = false;
+    private $masterLanguageId = false;
 
     // URI CONFIGURATION
     private $linguoURL = '';
@@ -146,6 +147,9 @@ class Linguo {
             $this->canWriteFiles = true;
         }
 
+        //Check if we have Master Language
+        $this->masterLanguageId = $this->_getMasterLanguageId();
+
         //Prepare base url
         $this->linguoURL = base_url().$this->_CI->router->fetch_directory().$this->_CI->router->fetch_class()."/".$this->_CI->router->fetch_method();
 	}
@@ -185,6 +189,21 @@ class Linguo {
             if(is_dir($language_path)){
                 $result = $this->_addLanguage($language);
             }
+        }
+    }
+
+    //GET MASTER LANGUAGE ID
+    public function _getMasterLanguageId(){
+        //Select item
+        $this->_DB->where('is_master', '1');
+        $sel_language = $this->_DB->get(self::DB_PREFIX.'languages');
+
+        if($sel_language->num_rows() != 1){
+            return false;
+        }
+        else{
+            $language = $sel_language->row_array();
+            return $language['language_id'];
         }
     }
 
@@ -499,12 +518,34 @@ class Linguo {
     }
 
     //CREATE LANGUAGE
-    public function createLanguage($value){
+    public function createLanguage($value, $clone){
+        //Create file
         $result = mkdir(APPPATH.'language/'.$value, 0777, true);
+
+        //If clone and have master language
+        if($clone=='1' && $this->masterLanguageId!==false){
+            //Get master language
+            $master_language = $this->_getLanguage($this->masterLanguageId);
+            //Get files from master language
+            $master_language_files = $this->getLanguageFiles($this->masterLanguageId);
+
+            foreach($master_language_files AS $file_id => $file_info){
+                $source_file = $file_info['path'];
+                $target_file = str_replace("/".$master_language['name']."/", "/".$value."/", $file_info['path']);
+
+                //Check if folder exists
+                if(!file_exists(dirname($target_file))){
+                    mkdir(dirname($target_file), 0777, true);
+                }
+
+                //Copy file
+                copy($source_file, $target_file);
+            }
+        }
     }
 
     //CREATE LANGUAGE FILE
-    public function createLanguageFile($language_id, $filename){
+    public function createLanguageFile($language_id, $filename, $clone){
         //$result = mkdir(APPPATH.'language/'.$value, 0777, true);
         $language = $this->_getLanguage($language_id);
         $filepath = $language['folder'].$filename;
@@ -514,8 +555,25 @@ class Linguo {
             mkdir(dirname($filepath), 0777, true);
         }
 
-        $result = fopen($filepath, 'w');
-        fclose($result);
+        //If clone and have master language
+        if($clone=='1' && $this->masterLanguageId!==false){
+            //Get master language
+            $master_language = $this->_getLanguage($this->masterLanguageId);
+            $originpath = str_replace("/".$language['name']."/", "/".$master_language['name']."/", $filepath);
+
+            if(file_exists($originpath)){
+                var_dump(copy($originpath, $filepath));
+            }
+            else{
+                $result = fopen($filepath, 'w');                
+                fclose($result);
+            }
+        }
+        else{
+            $result = fopen($filepath, 'w');
+            fclose($result);
+        }
+       
     }
 
     //CREATE LANGUAGE STRING
@@ -561,6 +619,7 @@ class Linguo {
             $view_data['language_id'] = $language_id;
             $view_data['file_id'] = $file_id;
             $view_data['can_write'] = $this->canWriteFiles;
+            $view_data['master_language_id'] = $this->masterLanguageId;
 
             //UI Items
             $view_data['css_data'] = $this->_get_css_data();
@@ -610,10 +669,10 @@ class Linguo {
                     $this->setMaster($this->_CI->input->post('language_id'));
                     break;
                 case "create_language":
-                    $this->createLanguage($this->_CI->input->post('value'));
+                    $this->createLanguage($this->_CI->input->post('value'), $this->_CI->input->post('clone'));
                     break;
                 case "create_file":
-                    $this->createLanguageFile($this->_CI->input->post('language_id'), $this->_CI->input->post('value'));
+                    $this->createLanguageFile($this->_CI->input->post('language_id'), $this->_CI->input->post('value'), $this->_CI->input->post('clone'));
                     break;
                 case "create_string":
                     $this->createString($this->_CI->input->post('file_id'), $this->_CI->input->post('key'), $this->_CI->input->post('value'));

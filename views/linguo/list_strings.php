@@ -35,7 +35,7 @@
                     <li data-search-term="<?php echo $string['key'];?>">
                         <i class="fa fa-key"></i>
                         <?php echo $string['key'];?> 
-                        <input type="text" class="form-control string_content" id="str-<?php echo($language_id);?>-<?php echo($file_id);?>-<?php echo($string['string_id']);?>" placeholder="Insert translation here." value="<?php echo $string['value'];?>"/>
+                        <input type="text" class="form-control string_content" id="str-<?php echo($language_id);?>-<?php echo($file_id);?>-<?php echo($string['string_id']);?>" placeholder="Insert translation here." value="<?php echo stripslashes($string['value']);?>"/>
                         <br />
                     </li>                    
                     <?php
