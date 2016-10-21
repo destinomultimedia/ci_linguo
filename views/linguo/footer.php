@@ -14,10 +14,13 @@
                         <?php
                             if($master_language_id !== false){
                             ?>
+                            <p>
+                                You can clone all folders and files from master language.
+                            </p>
                             <div class="form-group">
                                 <label for="string-key" class="control-label">Clone from master language:</label>
                                 <br />
-                                <input type="radio" class="form-check-input" value="1" name="language-clone_from_master"> Si
+                                <input type="radio" class="form-check-input" value="1" name="language-clone_from_master"> Yes
                                 &nbsp;&nbsp;
                                 <input type="radio" class="form-check-input" value="0" name="language-clone_from_master" checked=""> No
                             </div>
@@ -58,10 +61,13 @@
                         <?php
                             if($master_language_id !== false){
                             ?>
+                            <p>
+                                You can clone file contents if language file exists onto master language folder.
+                            </p>
                             <div class="form-group">
-                                <label for="string-key" class="control-label">Clone from master language:</label>
+                                <label for="string-key" class="control-label">Clone  file content from master language:</label>
                                 <br />
-                                <input type="radio" class="form-check-input" value="1" name="file-clone_from_master"> Si
+                                <input type="radio" class="form-check-input" value="1" name="file-clone_from_master"> Yes
                                 &nbsp;&nbsp;
                                 <input type="radio" class="form-check-input" value="0" name="file-clone_from_master" checked=""> No
                             </div>

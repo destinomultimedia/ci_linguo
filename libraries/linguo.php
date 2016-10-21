@@ -12,7 +12,11 @@ if (!defined('BASEPATH'))
  * @author      David López Santos <meencantaesto@hotmail.com>
  */
 
-define('EXT', '.php');
+//Check if this constant exists
+if(!defined('EXT')){
+    define('EXT', '.php');    
+}
+
 
 class Linguo {
 
@@ -397,7 +401,7 @@ class Linguo {
         $fields = array();
         $fields['file_id'] = $file_id;
         $fields['key'] = $key;
-        $fields['value'] = $value;
+        $fields['value'] = stripslashes($value);
 
         $this->_DB->where('file_id', $file_id);
         $this->_DB->where('key', $key);
@@ -433,7 +437,7 @@ class Linguo {
         fputs($tgt_file, "<?php\r\n\r\n");
         foreach($strings AS $key => $string){
             $key = $string['key'];
-            $value = $string['value'];
+            $value = addslashes($string['value']);
             fputs($tgt_file, "\$lang['".$key."'] = '".$value."';\r\n");
         }
         fclose($tgt_file);
@@ -619,7 +623,7 @@ class Linguo {
     //UPDATE LANGUAGE STRING
     public function updateString($string_id, $value){
         $this->_DB->where('string_id', $string_id);
-        $update_string = $this->_DB->update(self::DB_PREFIX.'language_strings', array('value'=> addslashes($value)));
+        $update_string = $this->_DB->update(self::DB_PREFIX.'language_strings', array('value'=> $value));
 
         if($update_string){
             //Get String
