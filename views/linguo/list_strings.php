@@ -8,6 +8,11 @@
                 <div class="col-md-6 text-right">
                     <?php
                         if($can_write){
+                            if(($master_language_id !== false) && $master_language_id!==$language_id){
+                            ?>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#syncLanguageFilesModal">Sync Strings with Master</button>
+                            <?php
+                            }
                         ?>
                         <button class="btn btn-primary" data-toggle="modal" data-target="#newStringModal">Add String</button>
                         <?php

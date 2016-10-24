@@ -148,6 +148,42 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="syncLanguageStringsModal" tabindex="-1" role="dialog" aria-labelledby="syncLanguageStringsModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="syncLanguageStringsModalLabel">Synchronize Strings</h4>
+                </div>
+                <div class="modal-body">
+                    <p>If one string on this file not exists on the master language it will be removed and if one string exists onto the master language and not exists on this file it will be added.</p>
+                    <p>Do you really want to synchronize the strings on this file? </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-sync_strings" data-dismiss="modal" class="btn btn-primary">Synchronize Strings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="syncLanguageFilesModal" tabindex="-1" role="dialog" aria-labelledby="syncLanguageFilesModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="syncLanguageFilesModalLabel">Synchronize Files</h4>
+                </div>
+                <div class="modal-body">
+                    <p>If one language file on this language not exists on the master language it will be removed and if one language file exists onto the master language and not exists on this language it will be added. Also all the files will be syncronized with the master language.</p>
+                    <p>Do you really want to synchronize files? </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="btn-sync_files" data-dismiss="modal" class="btn btn-primary">Synchronize Files</button>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
   <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
   <!-- JQUERY SCRIPTS -->

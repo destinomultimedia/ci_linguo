@@ -348,6 +348,20 @@ class Linguo {
         }
     }
 
+    public function _getLanguageFileByPath($file_path){
+        //Select item
+        $this->_DB->where('path', $file_path);
+        $sel_language_file = $this->_DB->get(self::DB_PREFIX.'language_files');
+
+        if($sel_language_file->num_rows() !== 1){
+            return false;
+        }
+        else{
+            $language_file = $sel_language_file->row_array();
+            return $language_file;
+        }
+    }
+
      public function _getString($string_id){
         //Select item
         $this->_DB->where('string_id', $string_id);
@@ -604,6 +618,86 @@ class Linguo {
         }
     }
 
+    //SYNCHRONIZE FILES
+    public function syncronizeFiles($language_id){
+        //Target Data
+        $language = $this->_getLanguage($language_id);
+        $target_files_ids = $this->getLanguageFiles($language_id);
+        $target_files_paths = array();
+        foreach($target_files_ids AS $target_file_id => $target_file){
+            $target_files_paths[$target_file['path']] = $target_file;
+        }
+
+        //If we have master language
+        if($this->masterLanguageId!==false){
+            //Source Data
+            $master_language = $this->_getLanguage($this->masterLanguageId);    
+            $source_files_ids = $this->getLanguageFiles($this->masterLanguageId);
+            $source_files_paths = array();
+            foreach($source_files_ids AS $source_file_id => $source_file){
+                $source_files_paths[$source_file['path']] = $source_file;
+            }        
+
+            //Check files that exists on source and not in target language
+            foreach($source_files_paths AS $source_file_path => $source_file){
+                //Configure path
+                $search_path = str_replace("/".$master_language['name']."/", "/".$language['name']."/", $source_file['path']);
+                if(!array_key_exists($search_path, $target_files_paths)){
+                    $this->createLanguageFile($language_id, str_replace($master_language['name']."/", "", $source_file['folder'])."/".$source_file['name'], '1');
+                }
+                else{
+                    $target_file = $target_files_paths[$search_path];
+                    $this->syncronizeStrings($language_id, $target_file['file_id']);
+                }
+            }
+
+            //Check files that exists on target and not in source language
+            foreach($target_files_paths AS $target_file_path => $target_file){
+                //Configure path
+                $search_path = str_replace("/".$language['name']."/", "/".$master_language['name']."/", $target_file['path']);
+                if(!array_key_exists($search_path, $source_files_paths)){
+                    $this->deleteLanguageFile($target_file['file_id']);
+                }
+            }
+        }
+
+        return;
+    }
+
+    //SYNCHRONIZE STRINGS
+    public function syncronizeStrings($language_id, $file_id){
+        //Target Data
+        $target_strings = $this->getLanguageFileStrings($file_id);
+        $target_file = $this->_getLanguageFile($file_id);
+        $language = $this->_getLanguage($language_id);
+
+        //Source Data
+        $master_language = $this->_getLanguage($this->masterLanguageId);
+        $originpath = str_replace("/".$language['name']."/", "/".$master_language['name']."/", $target_file['path']);
+        $source_file = $this->_getLanguageFileByPath($originpath);
+
+        //If source file exists
+        if($source_file!==false && $this->masterLanguageId!==false){
+            $source_strings = $this->getLanguageFileStrings($source_file['file_id']);
+
+            //Check strings that exists on source and not in target file
+            foreach($source_strings AS $source_string_key => $source_string){
+                if(!array_key_exists($source_string_key, $target_strings)){
+                    $this->createString($file_id, $source_string_key, $source_string['value']);
+                }
+            }
+
+            //Check strings that exists on target and not in source file
+            foreach($target_strings AS $target_string_key => $target_string){
+                if(!array_key_exists($target_string_key, $source_strings)){
+                    $this->deleteString($target_string['string_id']);
+                }
+            }
+        }
+        
+        return;
+    }
+
     //CREATE LANGUAGE STRING
     public function createString($file_id, $key, $value){
         //Configure query and insert if not exists
@@ -727,6 +821,12 @@ class Linguo {
                     break;
                 case "delete_file":
                     $this->deleteLanguageFile($this->_CI->input->post('file_id'));
+                    break;
+                case "sync_strings":
+                    $this->syncronizeStrings($this->_CI->input->post('language_id'), $this->_CI->input->post('file_id'));
+                    break;
+                case "sync_files":
+                    $this->syncronizeFiles($this->_CI->input->post('language_id'));
                     break;
             }
         }

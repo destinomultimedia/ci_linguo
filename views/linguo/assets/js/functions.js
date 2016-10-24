@@ -108,6 +108,44 @@ $(document).ready(function () {
         });
     });
 
+    //Synchronize strings
+    $('#btn-sync_strings').click(function(){
+        //Set Values
+        var language_id = $('#language_id').val();
+        var file_id = $('#file_id').val();
+
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: $('#linguo_url').val()+"/-/-/sync_strings",
+            data: {
+                language_id: language_id,
+                file_id: file_id,
+            },
+            success: function(data) { 
+                location.reload(); 
+            }
+        });
+    });
+
+    //Synchronize files
+    $('#btn-sync_files').click(function(){
+        //Set Values
+        var language_id = $('#language_id').val();
+
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: $('#linguo_url').val()+"/-/-/sync_files",
+            data: {
+                language_id: language_id
+            },
+            success: function(data) { 
+                location.reload(); 
+            }
+        });
+    });
+
 	//New String
 	$('#btn-new_string').click(function(){
 		var id = this.id;

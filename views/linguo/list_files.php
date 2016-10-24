@@ -12,6 +12,11 @@
                         ?>
                         <button class="btn btn-info" data-toggle="modal" data-target="#newFileModal">Add File</button>
                         <?php
+                            if(($master_language_id !== false) && $master_language_id!==$language_id){
+                            ?>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#syncLanguageFilesModal">Sync Files with Master</button>
+                            <?php
+                            }
                         }
                     ?>
                     <?php
