@@ -3,14 +3,14 @@
 LINGUO is a language frontend editor for CodeIgniter. With LINGUO you can:
 
   - Add/Edit/Delete language files.
-  - Create new languages cloning existing one.
+  - Create new languages cloning from existing one.
   - Syncronize language strings from one language to another.
 
 ### Installation:
 
 Just clone/download this repo. The repo has 2 folders, 
 
-* _libraries_. has one fille called linguo.php. Is a CodeIgniter library.
+* _libraries_. has one file called linguo.php. Is a CodeIgniter library.
 * _views_. It contains one folder called LINGUO where the UI files are stored.
 
 ### How to use:
@@ -26,7 +26,7 @@ public function linguo($language='', $file='', $action=''){
 }
 ```
 
-and open the web browser and point it to your url. Done !
+and open the web browser and point it to your method url. Done !
 
 ### Screenshots
 
